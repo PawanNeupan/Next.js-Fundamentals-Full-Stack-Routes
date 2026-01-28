@@ -1,15 +1,36 @@
 export type Product = {
-  id: string;
-  name: string;
-  price: number;
-};
+  id: string
+  name: string
+  price: number
+  image: string   // 👈 add this
+}
 
 export const products: Product[] = [
-  { id: "1", name: "iPhone 14", price: 999 },
-  { id: "2", name: "Samsung Galaxy S23", price: 899 },
-  { id: "3", name: "Pixel 8", price: 799 },
-  { id: "4", name: "AirPods", price: 199 },
-];
+  {
+    id: "1",
+    name: "iPhone 14",
+    price: 999,
+    image: "/images/iphone14.jpg",
+  },
+  {
+    id: "2",
+    name: "Samsung Galaxy S23",
+    price: 899,
+    image: "/images/Samsung Galaxy S23.jpg",
+  },
+  {
+    id: "3",
+    name: "Pixel 8",
+    price: 799,
+    image: "/images/pixel 8.jpg",
+  },
+  {
+    id: "4",
+    name: "AirPods",
+    price: 199,
+    image: "/images/airpods.jpg",
+  },
+]
 
 export async function getProducts(search?: string): Promise<Product[]> {
   if (!search) return products;

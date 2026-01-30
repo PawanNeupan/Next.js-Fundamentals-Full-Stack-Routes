@@ -4,7 +4,6 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 
-// Helper to initialize Supabase inside actions
 async function getSupabaseClient() {
   const cookieStore = await cookies()
   return createServerClient(
@@ -18,12 +17,10 @@ async function getSupabaseClient() {
   )
 }
 
-/** * NEW: Function to view/fetch all products 
- * Use this in your Server Components
+/** * Fetches all products from the table
  */
 export async function getProducts() {
   const supabase = await getSupabaseClient()
-
   const { data, error } = await supabase
     .from('products')
     .select('*')
@@ -33,32 +30,55 @@ export async function getProducts() {
     console.error('Fetch error:', error.message)
     return []
   }
-
   return data
 }
 
-/** * TASK 3: Protected Add Product Action
+/** * Protected Action to upload image and add product
  */
 export async function addProduct(formData: FormData) {
   const supabase = await getSupabaseClient()
-
-  // TASK 3 Verification
-  const { data: { user } } = await supabase.auth.getUser()
   
-  // Correction: Server actions can't 'alert()', we return an error instead
+  // TASK 3: Verify User Session
+  const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: "Unauthorized: Please log in." }
 
-  const rawFormData = {
-    name: formData.get('name') as string,
-    price: parseFloat(formData.get('price') as string),
-    image: formData.get('image') as string,
-    user_id: user.id
+  const name = formData.get('name') as string
+  const price = parseFloat(formData.get('price') as string)
+  const imageFile = formData.get('image') as File
+
+  let imageUrl = ""
+
+  // 1. Handle Image Upload to 'product-images' bucket
+  if (imageFile && imageFile.size > 0) {
+    const fileExt = imageFile.name.split('.').pop()
+    const fileName = `${user.id}-${Date.now()}.${fileExt}`
+    
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('product-images')
+      .upload(fileName, imageFile)
+
+    if (uploadError) return { error: "Upload failed: " + uploadError.message }
+
+    // 2. Generate the Public URL
+    const { data: urlData } = supabase.storage
+      .from('product-images')
+      .getPublicUrl(fileName)
+    
+    imageUrl = urlData.publicUrl
   }
 
-  const { error } = await supabase.from('products').insert([rawFormData])
+  // 3. Insert into Database
+  const { error } = await supabase.from('products').insert([
+    { 
+      name, 
+      price, 
+      image: imageUrl, 
+      user_id: user.id 
+    }
+  ])
 
   if (error) return { error: error.message }
   
-  revalidatePath('/dashboard')
+  revalidatePath('/dashboard/add')
   return { success: true }
 }

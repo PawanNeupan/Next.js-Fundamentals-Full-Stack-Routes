@@ -38,7 +38,7 @@ export default async function ProductPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       {/* Breadcrumbs */}
-      <p><Breadcrumbs /></p>
+      <Breadcrumbs />
 
       <Link
         href="/dashboard"

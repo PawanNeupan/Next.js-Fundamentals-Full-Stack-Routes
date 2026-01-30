@@ -13,7 +13,7 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-gray-100 p-4 flex gap-4">
       
       {/* LEFT ASIDE */}
-      <aside className=" w-1/2 space-y-2 flex flex-row gap-4">
+      <aside className=" w-1/2 space-y-2 flex flex-row">
         
 
         <div className="bg-white p-3 rounded shadow ">

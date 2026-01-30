@@ -8,7 +8,7 @@ export default function Breadcrumbs() {
   const segments = pathname.split("/").filter(Boolean) // ["dashboard", "1"]
 
   return (
-    <nav className="text-gray-600 text-sm mb-4">
+    <nav className="text-gray-800 text-sm mb-4">
       {segments.map((segment, index) => {
         const href = "/" + segments.slice(0, index + 1).join("/")
         const isLast = index === segments.length - 1

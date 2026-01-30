@@ -26,6 +26,7 @@ export default async function DashboardPage() {
         <h1 className="text-3xl font-bold">Dashboard</h1>
         {user && <span className="text-sm text-gray-500">User: {user.email}</span>}
       </div>
+      
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (

@@ -22,13 +22,13 @@ export const products: Product[] = [
     id: "3",
     name: "Pixel 8",
     price: 799,
-    image: "/images/pixel 8.jpg",
+    image: "/images/Pixel 8.jpg",
   },
   {
     id: "4",
     name: "AirPods",
     price: 199,
-    image: "/images/airpods.jpg",
+    image: "/images/AirPods.jpg",
   },
 ]
 

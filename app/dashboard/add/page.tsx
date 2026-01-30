@@ -87,7 +87,7 @@ export default function ProductForm() {
           <button 
             type="submit" 
             disabled={loading}
-            className="flex items-center justify-center bg-green-600 text-white py-4 rounded font-bold hover:bg-green-700 disabled:opacity-50 transition-all shadow-lg shadow-green-100/50 w-4xl"
+            className="flex items-center justify-center bg-green-600 text-white py-4 rounded font-bold hover:bg-green-700 disabled:opacity-50 transition-all shadow-lg shadow-green-100/50 w-full"
           >
             {loading ? "Uploading..." : "Publish Product"}
           </button>
